@@ -1,0 +1,10 @@
+name: 'Cloudflare Wrangler'
+description: 'Provide a description here'
+author: 'Cyb3r Jak3'
+inputs:
+  wranglerVersion:
+    required: false
+    description: 'Version of wrangler install'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
