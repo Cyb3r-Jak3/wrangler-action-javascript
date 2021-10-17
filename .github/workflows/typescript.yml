@@ -11,6 +11,7 @@ on:
     paths:
       - "**.ts"
       - ".github/workflows/typescript.yml"
+      - "package.json"
 
 jobs:
   test:
