@@ -1,0 +1,40 @@
+name: 'Action Test'
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
+    paths:
+      - "**.ts"
+      - ".github/workflows/action_check.yml"
+      - "action.yml"
+      - "dist/index.js"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Checkout Example Repo
+        uses: actions/checkout@v2
+        with:
+          repository: https://github.com/Cyb3r-Jak3/worker-example-project.git
+          path: example-project
+      
+      - run: cd example-project
+
+      - name: Test Action
+        uses: ./
+        with:
+          apiToken: ${{ secrets.TEST_TOKEN }}
+          secrets: |
+            HELLO
+        env:
+          HELLO: WORLD
+

@@ -5,10 +5,10 @@ branding:
   color: "orange"
 author: 'Cyb3r-Jak3'
 inputs:
-  apiKey:
-    description: "(Legacy) Your Cloudflare API Key"
   apiToken:
     description: "Your Cloudflare API Token"
+  apiKey:
+    description: "(Legacy) Your Cloudflare API Key"
   email:
     description: "(Legacy) Your Cloudflare Email"
   environment:
