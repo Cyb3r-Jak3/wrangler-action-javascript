@@ -48,10 +48,10 @@ function install(version) {
         const run_install = yield exec.getExecOutput('npm', ['install', `@cloudflare/wrangler@${version}`], {
             ignoreReturnCode: true
         });
+        core.endGroup();
         if (run_install.exitCode !== 0) {
             throw new Error(`Error installing wrangler: ${run_install.stdout}, ${run_install.stderr}`);
         }
-        core.endGroup();
     });
 }
 exports.install = install;
