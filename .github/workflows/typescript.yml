@@ -36,7 +36,7 @@ jobs:
         run: npm run test
 
       - name: Check if Build Needed
-      - run: |
+        run: |
           cp dist/* .
           npm run build
           diff worker.js dist/worker.js &>/dev/null
