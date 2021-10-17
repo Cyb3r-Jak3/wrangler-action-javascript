@@ -24,7 +24,7 @@ jobs:
       - name: Checkout Example Repo
         uses: actions/checkout@v2
         with:
-          repository: https://github.com/Cyb3r-Jak3/worker-example-project.git
+          repository: Cyb3r-Jak3/worker-example-project
           path: example-project
       
       - run: cd example-project
