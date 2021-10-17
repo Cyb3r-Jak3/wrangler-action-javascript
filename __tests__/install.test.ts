@@ -4,7 +4,7 @@ test('Install latest', async () => {
     await install('')
 })
 
-test('Install latest', async () => {
+test('Install specific version', async () => {
     await install('1.19.3')
 })
 
