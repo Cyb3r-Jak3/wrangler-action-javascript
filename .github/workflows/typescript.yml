@@ -40,4 +40,4 @@ jobs:
         run: |
           cp dist/* .
           npm run build
-          diff worker.js dist/worker.js &>/dev/null
+          diff index.js dist/index.js &>/dev/null
