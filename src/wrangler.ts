@@ -17,12 +17,10 @@ export async function wrangler_run(): Promise<void> {
     throw new Error('Publish command did not complete successfully')
   }
   secrets.forEach(async element => {
-    const secret_output = await exec.exec(`echo ${process.env[element]} | wrangler`, [
-      'secret',
-      'put',
-      element,
-      environment
-    ])
+    const secret_output = await exec.exec(
+      `echo ${process.env[element]} | wrangler`,
+      ['secret', 'put', element, environment]
+    )
     if (secret_output !== 0 && fail_on_missing_secret) {
       throw new Error('Error setting secret: ' + element)
     }

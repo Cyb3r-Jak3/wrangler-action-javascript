@@ -1,5 +1,4 @@
 import * as core from '@actions/core'
-import * as exec from '@actions/exec'
 
 import {install} from './install'
 
@@ -24,7 +23,9 @@ export async function set_creds(): Promise<void> {
 
 export async function run(): Promise<void> {
   try {
+    core.info('Setting cred')
     await set_creds()
+    core.info('Creds set')
     const wrangler_version = core.getInput('wranglerversion')
     await install(wrangler_version)
     core.saveState('isPost', true)
@@ -33,15 +34,4 @@ export async function run(): Promise<void> {
   }
 }
 
-async function logout(): Promise<void> {
-  const output = await exec.getExecOutput('wrangler', ['logout'])
-  if (output.exitCode !== 0) {
-    core.setFailed(`Error logging out: ${output.stdout}, ${output.stderr}`)
-  }
-}
-
-if (!!process.env['STATE_isPost']) {
-  run()
-} else {
-  logout()
-}
+run()

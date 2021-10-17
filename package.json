@@ -5,7 +5,7 @@
   "description": "Github action for running Cloudflare wrangler",
   "main": "lib/main.js",
   "scripts": {
-    "build": "tsc && ncc build",
+    "build": "tsc && ncc build -o dist/run src/main.ts && ncc build -o dist/post src/post.ts",
     "format": "prettier --write src/**/*.ts",
     "format-check": "prettier --check src/**/*.ts",
     "lint": "eslint src/**/*.ts",

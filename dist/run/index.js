@@ -1,156 +1,6 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 39:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.install = void 0;
-const core = __importStar(__nccwpck_require__(186));
-const exec = __importStar(__nccwpck_require__(514));
-function install(version) {
-    return __awaiter(this, void 0, void 0, function* () {
-        core.startGroup('Installing wrangler');
-        if (version === '') {
-            version = 'latest';
-        }
-        core.debug(`Select wrangler version ${version}`);
-        const run_install = yield exec.getExecOutput('npm', ['install', `@cloudflare/wrangler@${version}`], {
-            ignoreReturnCode: true
-        });
-        core.endGroup();
-        if (run_install.exitCode !== 0) {
-            throw new Error(`Error installing wrangler: ${run_install.stdout}, ${run_install.stderr}`);
-        }
-    });
-}
-exports.install = install;
-
-
-/***/ }),
-
-/***/ 109:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.run = exports.set_creds = void 0;
-const core = __importStar(__nccwpck_require__(186));
-const exec = __importStar(__nccwpck_require__(514));
-const install_1 = __nccwpck_require__(39);
-function set_creds() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const apiToken = core.getInput('apitoken');
-        const email = core.getInput('email');
-        const apiKey = core.getInput('apikey');
-        if (apiToken !== '') {
-            process.env['CF_API_TOKEN'] = apiToken;
-        }
-        else if (apiKey !== '') {
-            if (email === '') {
-                throw new Error('Need email set when using global api key');
-            }
-            process.env['CF_EMAIL'] = email;
-            process.env['CF_API_KEY'] = apiKey;
-        }
-        else {
-            throw new Error('Need to have either an apiToken or apiKey with email set');
-        }
-    });
-}
-exports.set_creds = set_creds;
-function run() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            yield set_creds();
-            const wrangler_version = core.getInput('wranglerversion');
-            yield (0, install_1.install)(wrangler_version);
-            core.saveState('isPost', true);
-        }
-        catch (error) {
-            if (error instanceof Error)
-                core.setFailed(error.message);
-        }
-    });
-}
-exports.run = run;
-function logout() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const output = yield exec.getExecOutput('wrangler', ['logout']);
-        if (output.exitCode !== 0) {
-            core.setFailed(`Error logging out: ${output.stdout}, ${output.stderr}`);
-        }
-    });
-}
-if (!!process.env['STATE_isPost']) {
-    run();
-}
-else {
-    logout();
-}
-
-
-/***/ }),
-
 /***/ 351:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -2972,6 +2822,144 @@ exports.debug = debug; // for test
 
 /***/ }),
 
+/***/ 649:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.install = void 0;
+const core = __importStar(__nccwpck_require__(186));
+const exec = __importStar(__nccwpck_require__(514));
+function install(version) {
+    return __awaiter(this, void 0, void 0, function* () {
+        core.startGroup('Installing wrangler');
+        if (version === '') {
+            version = 'latest';
+        }
+        core.debug(`Select wrangler version ${version}`);
+        const run_install = yield exec.getExecOutput('npm', ['install', `@cloudflare/wrangler@${version}`], {
+            ignoreReturnCode: true
+        });
+        core.endGroup();
+        if (run_install.exitCode !== 0) {
+            throw new Error(`Error installing wrangler: ${run_install.stdout}, ${run_install.stderr}`);
+        }
+    });
+}
+exports.install = install;
+
+
+/***/ }),
+
+/***/ 399:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.run = exports.set_creds = void 0;
+const core = __importStar(__nccwpck_require__(186));
+const install_1 = __nccwpck_require__(649);
+function set_creds() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const apiToken = core.getInput('apitoken');
+        const email = core.getInput('email');
+        const apiKey = core.getInput('apikey');
+        if (apiToken !== '') {
+            process.env['CF_API_TOKEN'] = apiToken;
+        }
+        else if (apiKey !== '') {
+            if (email === '') {
+                throw new Error('Need email set when using global api key');
+            }
+            process.env['CF_EMAIL'] = email;
+            process.env['CF_API_KEY'] = apiKey;
+        }
+        else {
+            throw new Error('Need to have either an apiToken or apiKey with email set');
+        }
+    });
+}
+exports.set_creds = set_creds;
+function run() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            core.info("Setting cred");
+            yield set_creds();
+            core.info("Creds set");
+            const wrangler_version = core.getInput('wranglerversion');
+            yield (0, install_1.install)(wrangler_version);
+            core.saveState('isPost', true);
+        }
+        catch (error) {
+            if (error instanceof Error)
+                core.setFailed(error.message);
+        }
+    });
+}
+exports.run = run;
+run();
+
+
+/***/ }),
+
 /***/ 357:
 /***/ ((module) => {
 
@@ -3118,7 +3106,7 @@ module.exports = require("util");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(109);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(399);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

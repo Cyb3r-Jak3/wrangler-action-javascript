@@ -29,5 +29,5 @@ inputs:
     default: true
 runs:
   using: 'node12'
-  main: 'dist/index.js'
-  post: 'dist/index.js'
+  main: 'dist/run/index.js'
+  post: 'dist/post/index.js'
