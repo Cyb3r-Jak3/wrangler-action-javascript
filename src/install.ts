@@ -17,10 +17,9 @@ export async function install(version: string): Promise<void> {
     }
   )
   if (run_install.exitCode !== 0) {
-    core.setFailed(
+    throw new Error(
       `Error installing wrangler: ${run_install.stdout}, ${run_install.stderr}`
     )
-    return
   }
   core.endGroup()
 }

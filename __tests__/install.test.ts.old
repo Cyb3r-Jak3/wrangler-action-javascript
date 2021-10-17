@@ -1,7 +1,0 @@
-// import {install} from '../src/install'
-
-// test('Empty Test', async () => {
-//   expect(run()).rejects.toThrow(
-//     '::error::Need to have either an apitoken or apikey with email set'
-//   )
-// })
