@@ -3009,7 +3009,8 @@ function wrangler_run() {
         if (environment !== '') {
             environment = `-e ${environment}`;
         }
-        const publish_output = yield exec.exec('wrangler', ['publish', environment]);
+        //   const publish_output = await exec.exec('wrangler', ['publish', ((environment !== '' ? environment : null ) ], {ignoreReturnCode: true})
+        const publish_output = yield exec.exec(`wrangler publish ${environment !== '' ? environment : null}`, undefined, { ignoreReturnCode: true });
         if (publish_output !== 0) {
             throw new Error('Publish command did not complete successfully');
         }

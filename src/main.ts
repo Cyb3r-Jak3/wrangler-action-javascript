@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 
 import {install} from './install'
-import { wrangler_run } from './wrangler'
+import {wrangler_run} from './wrangler'
 
 export async function set_creds(): Promise<void> {
   const apiToken = core.getInput('apitoken')

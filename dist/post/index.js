@@ -2860,7 +2860,9 @@ const exec = __importStar(__nccwpck_require__(514));
 const core = __importStar(__nccwpck_require__(186));
 function logout() {
     return __awaiter(this, void 0, void 0, function* () {
-        const output = yield exec.getExecOutput('wrangler', ['logout']);
+        const output = yield exec.getExecOutput('wrangler', ['logout'], {
+            ignoreReturnCode: true
+        });
         if (output.exitCode !== 0) {
             core.setFailed(`Error logging out: ${output.stdout}, ${output.stderr}`);
         }
