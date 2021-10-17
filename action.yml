@@ -1,10 +1,33 @@
-name: 'Cloudflare Wrangler'
+name: 'Cloudflare Wrangler Action'
 description: 'Provide a description here'
-author: 'Cyb3r Jak3'
+branding:
+  icon: "upload-cloud"
+  color: "orange"
+author: 'Cyb3r-Jak3'
 inputs:
+  apiKey:
+    description: "(Legacy) Your Cloudflare API Key"
+  apiToken:
+    description: "Your Cloudflare API Token"
+  email:
+    description: "(Legacy) Your Cloudflare Email"
+  environment:
+    description: "The environment you'd like to publish your Workers project to - must be defined in wrangler.toml"
   wranglerVersion:
     required: false
     description: 'Version of wrangler install'
+  publish:
+    description: "Set to false to skip publishing your Worker project and secrets.  Defaults to true."
+    required: false
+    default: true
+  secrets:
+    description: "A new line delimitated string of environment variable names that should be configured as Worker secrets"
+    required: false
+  fail_on_missing_secret:
+    description: "Boolean input to fail the job if a secret value is not set"
+    required: false
+    default: true
 runs:
   using: 'node12'
   main: 'dist/index.js'
+  post: 'dist/index.js'
