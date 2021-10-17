@@ -2866,7 +2866,7 @@ function install(version) {
             version = 'latest';
         }
         core.debug(`Select wrangler version ${version}`);
-        const run_install = yield exec.getExecOutput('npm', ['install', `@cloudflare/wrangler@${version}`], {
+        const run_install = yield exec.getExecOutput('npm', ['install', '-g', `@cloudflare/wrangler@${version}`], {
             ignoreReturnCode: true
         });
         core.endGroup();
@@ -2917,6 +2917,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = exports.set_creds = void 0;
 const core = __importStar(__nccwpck_require__(186));
 const install_1 = __nccwpck_require__(649);
+const wrangler_1 = __nccwpck_require__(268);
 function set_creds() {
     return __awaiter(this, void 0, void 0, function* () {
         const apiToken = core.getInput('apitoken');
@@ -2941,11 +2942,10 @@ exports.set_creds = set_creds;
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            core.info("Setting cred");
             yield set_creds();
-            core.info("Creds set");
             const wrangler_version = core.getInput('wranglerversion');
             yield (0, install_1.install)(wrangler_version);
+            yield (0, wrangler_1.wrangler_run)();
             core.saveState('isPost', true);
         }
         catch (error) {
@@ -2956,6 +2956,72 @@ function run() {
 }
 exports.run = run;
 run();
+
+
+/***/ }),
+
+/***/ 268:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.wrangler_run = void 0;
+const core = __importStar(__nccwpck_require__(186));
+const exec = __importStar(__nccwpck_require__(514));
+function wrangler_run() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const publish = core.getBooleanInput('publish');
+        if (!publish) {
+            return;
+        }
+        var environment = core.getInput('environment');
+        const secrets = core.getMultilineInput('secrets');
+        const fail_on_missing_secret = core.getBooleanInput('fail_on_missing_secret');
+        if (environment !== '') {
+            environment = `-e ${environment}`;
+        }
+        const publish_output = yield exec.exec('wrangler', ['publish', environment]);
+        if (publish_output !== 0) {
+            throw new Error('Publish command did not complete successfully');
+        }
+        secrets.forEach((element) => __awaiter(this, void 0, void 0, function* () {
+            const secret_output = yield exec.exec(`echo ${process.env[element]} | wrangler`, ['secret', 'put', element, environment]);
+            if (secret_output !== 0 && fail_on_missing_secret) {
+                throw new Error('Error setting secret: ' + element);
+            }
+        }));
+    });
+}
+exports.wrangler_run = wrangler_run;
 
 
 /***/ }),

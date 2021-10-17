@@ -11,7 +11,7 @@ export async function install(version: string): Promise<void> {
   core.debug(`Select wrangler version ${version}`)
   const run_install = await exec.getExecOutput(
     'npm',
-    ['install', `@cloudflare/wrangler@${version}`],
+    ['install', '-g', `@cloudflare/wrangler@${version}`],
     {
       ignoreReturnCode: true
     }

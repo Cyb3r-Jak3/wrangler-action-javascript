@@ -1,6 +1,7 @@
 import * as core from '@actions/core'
 
 import {install} from './install'
+import { wrangler_run } from './wrangler'
 
 export async function set_creds(): Promise<void> {
   const apiToken = core.getInput('apitoken')
@@ -23,11 +24,10 @@ export async function set_creds(): Promise<void> {
 
 export async function run(): Promise<void> {
   try {
-    core.info('Setting cred')
     await set_creds()
-    core.info('Creds set')
     const wrangler_version = core.getInput('wranglerversion')
     await install(wrangler_version)
+    await wrangler_run()
     core.saveState('isPost', true)
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
