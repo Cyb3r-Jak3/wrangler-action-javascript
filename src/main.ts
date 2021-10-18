@@ -25,8 +25,7 @@ export async function set_creds(): Promise<void> {
 export async function run(): Promise<void> {
   try {
     await set_creds()
-    const wrangler_version = core.getInput('wranglerversion')
-    await install(wrangler_version)
+    await install()
     await wrangler_run()
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)

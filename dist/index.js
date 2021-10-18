@@ -38,9 +38,10 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.install = void 0;
 const core = __importStar(__nccwpck_require__(186));
 const exec = __importStar(__nccwpck_require__(514));
-function install(version) {
+function install() {
     return __awaiter(this, void 0, void 0, function* () {
         core.startGroup('Installing wrangler');
+        var version = core.getInput('wranglerversion');
         if (version === '') {
             version = 'latest';
         }
@@ -122,8 +123,7 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield set_creds();
-            const wrangler_version = core.getInput('wranglerversion');
-            yield (0, install_1.install)(wrangler_version);
+            yield (0, install_1.install)();
             yield (0, wrangler_1.wrangler_run)();
         }
         catch (error) {
@@ -182,23 +182,32 @@ function wrangler_run() {
             return;
         }
         var environment = core.getInput('environment');
-        const secrets = core.getMultilineInput('secrets');
-        const fail_on_missing_secret = core.getBooleanInput('fail_on_missing_secret');
         if (environment !== '') {
             environment = `-e ${environment}`;
         }
+        core.startGroup("Publishing");
         const publish_output = yield exec.exec('wrangler', ['publish'], {
             ignoreReturnCode: true
         });
         if (publish_output !== 0) {
             throw new Error('Publish command did not complete successfully');
         }
-        secrets.forEach((element) => __awaiter(this, void 0, void 0, function* () {
-            const secret_output = yield exec.exec(`echo ${process.env[element]} | wrangler`, ['secret', 'put', element, environment]);
-            if (secret_output !== 0 && fail_on_missing_secret) {
-                throw new Error('Error setting secret: ' + element);
-            }
-        }));
+        core.endGroup();
+        const secrets = core.getMultilineInput('secrets');
+        if (secrets.length !== 0) {
+            core.startGroup("Setting Secrets");
+            const fail_on_missing_secret = core.getBooleanInput('fail_on_missing_secret');
+            secrets.forEach((element) => __awaiter(this, void 0, void 0, function* () {
+                if (process.env.element === undefined && fail_on_missing_secret) {
+                    throw new Error(`Secret '${element}' wanted and not set`);
+                }
+                const secret_output = yield exec.exec(`echo ${process.env.element} | wrangler`, ['secret', 'put', element, environment]);
+                if (secret_output !== 0) {
+                    throw new Error('Error setting secret: ' + element);
+                }
+            }));
+            core.endGroup();
+        }
     });
 }
 exports.wrangler_run = wrangler_run;

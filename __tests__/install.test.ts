@@ -1,13 +1,16 @@
 import {install} from '../src/install'
 
 test('Install latest', async () => {
-    await install('')
+    process.env["INPUT_WRANGLERVERSION"] = ''
+    await install()
 })
 
 test('Install specific version', async () => {
-    await install('1.19.3')
+    process.env["INPUT_WRANGLERVERSION"] = '1.19.3'
+    await install()
 })
 
 test('Install bad', async () => {
-    expect(install('-1')).rejects.toThrow('Error installing wrangler: ')
+    process.env["INPUT_WRANGLERVERSION"] = '-'
+    expect(install()).rejects.toThrow('Error installing wrangler: ')
 })

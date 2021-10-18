@@ -30,10 +30,6 @@ jobs:
         with:
           path: ./action
 
-      - run: |
-          ls -l
-          ls -l ./action
-      
       - name: Successful Action
         uses: ./action
         with:

@@ -2,8 +2,9 @@ import * as core from '@actions/core'
 
 import * as exec from '@actions/exec'
 
-export async function install(version: string): Promise<void> {
+export async function install(): Promise<void> {
   core.startGroup('Installing wrangler')
+  var version = core.getInput('wranglerversion')
 
   if (version === '') {
     version = 'latest'
