@@ -52,6 +52,8 @@ jobs:
 
       - name: Different Config
         uses: ./action
-        config: wrangler.toml.2
         with:
+          config: wrangler_copy.toml
           apiToken: ${{ secrets.TEST_TOKEN }}
+        env:
+          CF_ZONE_ID: ${{secrets.ZONE_ID}}
