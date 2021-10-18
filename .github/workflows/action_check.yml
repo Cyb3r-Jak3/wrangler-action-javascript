@@ -18,18 +18,16 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      # - name: Checkout
+      #   uses: actions/checkout@v2
 
       - name: Checkout Example Repo
         uses: actions/checkout@v2
         with:
           repository: Cyb3r-Jak3/worker-example-project
-          path: example-project
       
       - name: Test Action
-        uses: ./
-        working-directory: example-project
+        uses: ${{ github.repository }}@${{ github.head_ref }}
         with:
           apiToken: ${{ secrets.TEST_TOKEN }}
           secrets: |
