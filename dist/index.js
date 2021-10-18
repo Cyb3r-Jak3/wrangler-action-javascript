@@ -185,11 +185,11 @@ function wrangler_run() {
         var command_line_args = [];
         const environment = core.getInput('environment');
         if (environment !== '') {
-            command_line_args.push(`-env ${environment}`);
+            command_line_args.push(`--env ${environment}`);
         }
         const config = core.getInput('config');
         if (config !== '') {
-            command_line_args.push(`-c ${config}`);
+            command_line_args.push(`--config ${config}`);
         }
         const publish_output = yield exec.exec('wrangler', ['publish', ...command_line_args], {
             ignoreReturnCode: true

@@ -29,6 +29,8 @@ jobs:
         with:
           path: ./action
 
+      - run: cat wrangler.toml
+
       - name: Successful Action
         uses: ./action
         with:
@@ -39,16 +41,6 @@ jobs:
           HELLO: ${{ secrets.HELLO }}
           CF_ZONE_ID: ${{secrets.ZONE_ID}}
 
-      - name: Different Environment
-        uses: ./action
-        with:
-          apiToken: ${{ secrets.TEST_TOKEN }}
-          environment: demo
-          secrets: |
-            HELLO
-        env:
-          HELLO: ${{ secrets.HELLO }}
-
       - name: Different Config
         uses: ./action
         with:
@@ -56,3 +48,13 @@ jobs:
           apiToken: ${{ secrets.TEST_TOKEN }}
         env:
           CF_ZONE_ID: ${{secrets.ZONE_ID}}
+
+      - name: Different Environment
+        uses: ./action
+        with:
+          apiToken: ${{ secrets.TEST_TOKEN }}
+          environment: staging
+          secrets: |
+            HELLO
+        env:
+          HELLO: ${{ secrets.HELLO }}
