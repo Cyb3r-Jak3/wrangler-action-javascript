@@ -22,7 +22,7 @@ jobs:
       - name: Checkout Action
         uses: actions/checkout@v2
         with:
-          path: action
+          path: ./action
       
       - run: |
           pwd
@@ -35,7 +35,7 @@ jobs:
           repository: Cyb3r-Jak3/worker-example-project
       
       - name: Successful Action
-        uses: action
+        uses: ./action
         with:
           apiToken: ${{ secrets.TEST_TOKEN }}
           secrets: |
