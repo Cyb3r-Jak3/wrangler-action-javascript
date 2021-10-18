@@ -18,19 +18,22 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      # - run: echo ${{ github.repository }}@${GITHUB_REF##*/}
-      # - run: echo running on branch ${GITHUB_REF##*/}
-      - name: Checkout Example Repo
+
+      - name: Checkout Action
         uses: actions/checkout@v2
         with:
           path: action
+      
+      - run: |
+          ls -l
+          ls -l ./action
+
       - name: Checkout Example Repo
         uses: actions/checkout@v2
         with:
           repository: Cyb3r-Jak3/worker-example-project
       
       - name: Successful Action
-        # uses: Cyb3r-Jak3/wrangler-action-javascript@dev
         uses: ./action
         with:
           apiToken: ${{ secrets.TEST_TOKEN }}
