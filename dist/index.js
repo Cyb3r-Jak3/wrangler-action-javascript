@@ -40,7 +40,6 @@ const core = __importStar(__nccwpck_require__(186));
 const exec = __importStar(__nccwpck_require__(514));
 function install() {
     return __awaiter(this, void 0, void 0, function* () {
-        core.startGroup('Installing wrangler');
         var version = core.getInput('wranglerversion');
         if (version === '') {
             version = 'latest';
@@ -185,11 +184,11 @@ function wrangler_run() {
         var command_line_args = [];
         const environment = core.getInput('environment');
         if (environment !== '') {
-            command_line_args.push(`--env ${environment}`);
+            command_line_args.push('--env', environment);
         }
         const config = core.getInput('config');
         if (config !== '') {
-            command_line_args.push(`--config ${config}`);
+            command_line_args.push('--config', config);
         }
         const publish_output = yield exec.exec('wrangler', ['publish', ...command_line_args], {
             ignoreReturnCode: true
