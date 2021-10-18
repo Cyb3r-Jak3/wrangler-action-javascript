@@ -24,15 +24,18 @@ jobs:
         with:
           path: ./action
       
-      - run: |
-          pwd
-          ls -l
-          ls -l ./action
+
 
       - name: Checkout Example Repo
         uses: actions/checkout@v2
         with:
           repository: Cyb3r-Jak3/worker-example-project
+
+      - run: |
+          pwd
+          ls -l
+          ls -l ./action
+          ls /home/runner/work/wrangler-action-javascript/wrangler-action-javascript/action
       
       - name: Successful Action
         uses: ./action
