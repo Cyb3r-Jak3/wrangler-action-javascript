@@ -27,10 +27,9 @@ jobs:
           repository: Cyb3r-Jak3/worker-example-project
           path: example-project
       
-      - run: cd example-project
-
       - name: Test Action
         uses: ./
+        working-directory: example-project
         with:
           apiToken: ${{ secrets.TEST_TOKEN }}
           secrets: |
