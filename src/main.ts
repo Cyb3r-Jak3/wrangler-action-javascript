@@ -28,7 +28,6 @@ export async function run(): Promise<void> {
     const wrangler_version = core.getInput('wranglerversion')
     await install(wrangler_version)
     await wrangler_run()
-    core.saveState('isPost', true)
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
