@@ -21,13 +21,15 @@ jobs:
       # - name: Checkout
       #   uses: actions/checkout@v2
 
+      - run: echo ${{ github.repository }}@${{ github.head_ref }}
       - name: Checkout Example Repo
         uses: actions/checkout@v2
         with:
           repository: Cyb3r-Jak3/worker-example-project
       
       - name: Test Action
-        uses: ${{ github.repository }}@${{ github.head_ref }}
+        # uses: ${{ github.repository }}@${{ github.head_ref }}
+        uses: Cyb3r-Jak3/wrangler-action-javascript@dev
         with:
           apiToken: ${{ secrets.TEST_TOKEN }}
           secrets: |
