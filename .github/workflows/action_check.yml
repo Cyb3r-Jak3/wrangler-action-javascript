@@ -48,7 +48,6 @@ jobs:
             HELLO
         env:
           HELLO: ${{ secrets.HELLO }}
-          CF_ZONE_ID: ${{secrets.ZONE_ID_2}}
 
       - name: Different Config
         uses: ./action

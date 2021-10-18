@@ -10,7 +10,7 @@ export async function wrangler_run(): Promise<void> {
   var command_line_args: string[] = []
   const environment = core.getInput('environment')
   if (environment !== '') {
-    command_line_args.push(`-e ${environment}`)
+    command_line_args.push(`-env ${environment}`)
   }
   const config = core.getInput('config')
   if (config !== '') {
