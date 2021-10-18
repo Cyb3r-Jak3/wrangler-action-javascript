@@ -182,19 +182,18 @@ function wrangler_run() {
             return;
         }
         core.startGroup('Publishing');
-        var environment = core.getInput('environment');
-        var publish_output;
+        var command_line_args = [];
+        const environment = core.getInput('environment');
         if (environment !== '') {
-            environment = `-e ${environment}`;
-            publish_output = yield exec.exec('wrangler', ['publish', environment], {
-                ignoreReturnCode: true
-            });
+            command_line_args.push(`-e ${environment}`);
         }
-        else {
-            publish_output = yield exec.exec('wrangler', ['publish'], {
-                ignoreReturnCode: true
-            });
+        const config = core.getInput('config');
+        if (config !== '') {
+            command_line_args.push(`-c ${config}`);
         }
+        const publish_output = yield exec.exec('wrangler', ['publish', ...command_line_args], {
+            ignoreReturnCode: true
+        });
         if (publish_output !== 0) {
             throw new Error('Publish command did not complete successfully');
         }

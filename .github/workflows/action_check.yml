@@ -17,8 +17,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    steps:    
-
+    steps:
 
       - name: Checkout Example Repo
         uses: actions/checkout@v2
@@ -38,4 +37,21 @@ jobs:
             HELLO
         env:
           HELLO: ${{ secrets.HELLO }}
+          CF_ZONE_ID: ${{secrets.ZONE_ID}}
 
+      - name: Different Environment
+        uses: ./action
+        with:
+          apiToken: ${{ secrets.TEST_TOKEN }}
+          environment: demo
+          secrets: |
+            HELLO
+        env:
+          HELLO: ${{ secrets.HELLO }}
+          CF_ZONE_ID: ${{secrets.ZONE_ID_2}}
+
+      - name: Different Config
+        uses: ./action
+        config: wrangler.toml.2
+        with:
+          apiToken: ${{ secrets.TEST_TOKEN }}

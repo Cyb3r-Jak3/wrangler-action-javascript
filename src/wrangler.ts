@@ -28,6 +28,7 @@ export async function wrangler_run(): Promise<void> {
     throw new Error('Publish command did not complete successfully')
   }
   core.endGroup()
+
   const secrets = core.getMultilineInput('secrets')
   if (secrets.length !== 0) {
     core.startGroup('Setting Secrets')
