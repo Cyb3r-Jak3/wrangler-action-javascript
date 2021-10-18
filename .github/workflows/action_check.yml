@@ -17,13 +17,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    steps:
-
-      - name: Checkout Action
-        uses: actions/checkout@v2
-        with:
-          path: ./action
-      
+    steps:    
 
 
       - name: Checkout Example Repo
@@ -31,11 +25,14 @@ jobs:
         with:
           repository: Cyb3r-Jak3/worker-example-project
 
+      - name: Checkout Action
+        uses: actions/checkout@v2
+        with:
+          path: ./action
+
       - run: |
-          pwd
           ls -l
           ls -l ./action
-          ls /home/runner/work/wrangler-action-javascript/wrangler-action-javascript/action
       
       - name: Successful Action
         uses: ./action
