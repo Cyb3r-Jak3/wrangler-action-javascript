@@ -40,18 +40,18 @@ const core = __importStar(__nccwpck_require__(186));
 const exec = __importStar(__nccwpck_require__(514));
 function install() {
     return __awaiter(this, void 0, void 0, function* () {
+        core.startGroup("Installing Wrangler");
         var version = core.getInput('wranglerversion');
         if (version === '') {
             version = 'latest';
         }
-        core.debug(`Select wrangler version ${version}`);
         const run_install = yield exec.getExecOutput('npm', ['install', '-g', `@cloudflare/wrangler@${version}`], {
             ignoreReturnCode: true
         });
-        core.endGroup();
         if (run_install.exitCode !== 0) {
             throw new Error(`Error installing wrangler: ${run_install.stdout}, ${run_install.stderr}`);
         }
+        core.endGroup();
     });
 }
 exports.install = install;
