@@ -41,11 +41,12 @@ export async function wrangler_run(): Promise<void> {
       }
       const secret_output = await exec.getExecOutput(
         `echo ${process.env[secret]} | wrangler`,
-        ['secret', 'put', secret, ...command_line_args],
+        ['secret', 'put', `"${secret}"`, ...command_line_args],
         {
           ignoreReturnCode: true
         }
       )
+      core.info((secret_output.stdout, secret_output.stderr))
       if (secret_output.exitCode !== 0) {
         throw new Error(
           `Error setting secret '${secret}': ${secret_output.stdout}, ${secret_output.stderr}`
