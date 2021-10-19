@@ -29,8 +29,6 @@ jobs:
         with:
           path: ./action
 
-      - run: cat wrangler.toml
-
       - name: Successful Action
         uses: ./action
         with:
@@ -58,3 +56,4 @@ jobs:
             HELLO
         env:
           HELLO: ${{ secrets.HELLO }}
+          CF_ZONE_ID: ${{secrets.ZONE_ID_2}}
