@@ -35,18 +35,23 @@ export async function wrangler_run(): Promise<void> {
     const fail_on_missing_secret = core.getBooleanInput(
       'fail_on_missing_secret'
     )
-    secrets.forEach(async element => {
-      if (process.env[element] === undefined && fail_on_missing_secret) {
-        throw new Error(`Secret '${element}' wanted and not set`)
+    for (const secret of secrets) {
+      if (process.env[secret] === undefined && fail_on_missing_secret) {
+        throw new Error(`Secret '${secret}' wanted and not set`)
       }
-      const secret_output = await exec.exec(
-        `echo ${process.env[element]} | wrangler`,
-        ['secret', 'put', element, environment]
+      const secret_output = await exec.getExecOutput(
+        `echo ${process.env[secret]} | wrangler`,
+        ['secret', 'put', secret, environment],
+        {
+          ignoreReturnCode: true
+        }
       )
-      if (secret_output !== 0) {
-        throw new Error('Error setting secret: ' + element)
+      if (secret_output.exitCode !== 0) {
+        throw new Error(
+          `Error setting secret '${secret}': ${secret_output.stdout}, ${secret_output.stderr}`
+        )
       }
-    })
+    }
     core.endGroup()
   }
 }
