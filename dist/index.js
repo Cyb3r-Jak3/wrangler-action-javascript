@@ -40,7 +40,7 @@ const core = __importStar(__nccwpck_require__(186));
 const exec = __importStar(__nccwpck_require__(514));
 function install() {
     return __awaiter(this, void 0, void 0, function* () {
-        core.startGroup("Installing Wrangler");
+        core.startGroup('Installing Wrangler');
         var version = core.getInput('wranglerversion');
         if (version === '') {
             version = 'latest';
@@ -205,7 +205,7 @@ function wrangler_run() {
                 if (process.env[secret] === undefined && fail_on_missing_secret) {
                     throw new Error(`Secret '${secret}' wanted and not set`);
                 }
-                const secret_output = yield exec.getExecOutput(`echo ${process.env[secret]} | wrangler`, ['secret', 'put', secret, environment], {
+                const secret_output = yield exec.getExecOutput(`echo ${process.env[secret]} | wrangler`, ['secret', 'put', secret, ...command_line_args], {
                     ignoreReturnCode: true
                 });
                 if (secret_output.exitCode !== 0) {

@@ -41,7 +41,7 @@ export async function wrangler_run(): Promise<void> {
       }
       const secret_output = await exec.getExecOutput(
         `echo ${process.env[secret]} | wrangler`,
-        ['secret', 'put', secret, environment],
+        ['secret', 'put', secret, ...command_line_args],
         {
           ignoreReturnCode: true
         }
