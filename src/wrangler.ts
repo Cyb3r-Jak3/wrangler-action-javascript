@@ -40,8 +40,9 @@ export async function wrangler_run(): Promise<void> {
         throw new Error(`Secret '${secret}' wanted and not set`)
       }
       const secret_output = await exec.getExecOutput(
-        `echo ${process.env[secret]} | wrangler`,
-        ['secret', 'put', `"${secret}"`, ...command_line_args],
+        `echo ${process.env[secret]} | wrangler secret put ${secret} ${command_line_args}`,
+        // ['secret', 'put', `"${secret}"`, ...command_line_args],
+        [],
         {
           ignoreReturnCode: true
         }

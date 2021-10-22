@@ -205,7 +205,9 @@ function wrangler_run() {
                 if (process.env[secret] === undefined && fail_on_missing_secret) {
                     throw new Error(`Secret '${secret}' wanted and not set`);
                 }
-                const secret_output = yield exec.getExecOutput(`echo ${process.env[secret]} | wrangler`, ['secret', 'put', `"${secret}"`, ...command_line_args], {
+                const secret_output = yield exec.getExecOutput(`echo ${process.env[secret]} | wrangler secret put ${secret} ${command_line_args}`, 
+                // ['secret', 'put', `"${secret}"`, ...command_line_args],
+                [], {
                     ignoreReturnCode: true
                 });
                 core.info((secret_output.stdout, secret_output.stderr));
