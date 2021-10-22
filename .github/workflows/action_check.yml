@@ -36,7 +36,8 @@ jobs:
           secrets: |
             HELLO
         env:
-          HELLO: ${{ secrets.HELLO }}
+          # HELLO: ${{ secrets.HELLO }}
+          HELLO: WORLD
           CF_ZONE_ID: ${{secrets.ZONE_ID}}
           CF_ACCOUNT_ID: ${{secrets.ACCOUNT_ID}}
 
