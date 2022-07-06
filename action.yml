@@ -18,7 +18,7 @@ inputs:
   wranglerVersion:
     description: 'Version of wrangler install. Defaults to latest'
   publish:
-    description: "Set to false to skip publishing your Worker project and secrets.  Defaults to true."
+    description: "Set to false to skip publishing your Worker project and secrets. Defaults to true."
     default: true
   secrets:
     description: "A new line delimitated string of environment variable names that should be configured as Worker secrets"
@@ -27,5 +27,5 @@ inputs:
     description: "Boolean input to fail the job if a secret value is not set"
     default: true
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
